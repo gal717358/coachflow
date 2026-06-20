@@ -1,65 +1,156 @@
-import Image from "next/image";
+import Link from "next/link";
+import { AthleteCard } from "@/components/athlete-card";
+import { RosterFilters } from "@/components/roster-filters";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { currentUser, listUsers } from "@/lib/auth";
+import { getRoster, type RosterRow } from "@/lib/queries";
+import { ALERT_LABELS } from "@/lib/alerts";
+import { fullName } from "@/lib/format";
 
-export default function Home() {
+function Stat({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: number | string;
+  accent?: boolean;
+}) {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <Card className="gap-1 p-4">
+      <div
+        className={`text-2xl font-bold tracking-tight ${
+          accent && Number(value) > 0 ? "text-amber-600" : ""
+        }`}
+      >
+        {value}
+      </div>
+      <div className="text-sm text-muted-foreground">{label}</div>
+    </Card>
+  );
+}
+
+function matches(row: RosterRow, sp: Record<string, string | undefined>) {
+  if (sp.q && !fullName(row.athlete).toLowerCase().includes(sp.q.toLowerCase()))
+    return false;
+  if (
+    sp.coach &&
+    row.athlete.primary_coach_id !== sp.coach &&
+    row.athlete.secondary_coach_id !== sp.coach
+  )
+    return false;
+  if (sp.status && row.athlete.status !== sp.status) return false;
+  if (sp.level && row.experienceLevel !== sp.level) return false;
+  if (sp.attention === "assessment" && !row.alerts.assessmentDue) return false;
+  if (sp.attention === "goal" && !row.goalDue) return false;
+  if (sp.attention === "any" && row.alerts.kinds.length === 0) return false;
+  return true;
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
+  const [user, sp] = await Promise.all([currentUser(), searchParams]);
+  if (!user) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <Card className="p-8 text-center text-muted-foreground">
+          לא נמצאו משתמשים. הריצו את מיגרציית ובסיס הנתונים והזריעה, ואז רעננו.
+        </Card>
+      </div>
+    );
+  }
+
+  const [roster, allUsers] = await Promise.all([getRoster(user), listUsers()]);
+  const coaches = allUsers.filter((u) => u.role === "coach");
+
+  // Studio overview (unfiltered).
+  const active = roster.filter((r) => r.athlete.status === "active").length;
+  const former = roster.filter((r) => r.athlete.status === "former").length;
+  const assessmentsDue = roster.filter((r) => r.alerts.assessmentDue).length;
+  const goalsDue = roster.filter((r) => r.goalDue).length;
+  const attention = roster.filter((r) => r.alerts.kinds.length > 0);
+
+  const filtered = roster.filter((r) => matches(r, sp));
+  const isFiltered = Object.values(sp).some(Boolean);
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight">סקירת הסטודיו</h1>
+        <p className="text-sm text-muted-foreground">
+          {user.role === "owner"
+            ? "כל המתאמנים בסטודיו."
+            : `המתאמנים שלך, ${user.name}.`}
+        </p>
+      </div>
+
+      <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <Stat label="סך המתאמנים" value={roster.length} />
+        <Stat label="פעילים" value={active} />
+        <Stat label="לשעבר" value={former} />
+        <Stat label="הערכות נדרשות" value={assessmentsDue} accent />
+        <Stat label="מטרות לסקירה" value={goalsDue} accent />
+      </div>
+
+      {attention.length > 0 && (
+        <Card className="mb-8 p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <h2 className="font-semibold">דורש טיפול</h2>
+            <Badge variant="secondary">{attention.length}</Badge>
+          </div>
+          <ul className="divide-y">
+            {attention.map((r) => (
+              <li key={r.athlete.id}>
+                <Link
+                  href={`/athletes/${r.athlete.id}`}
+                  className="flex flex-wrap items-center justify-between gap-2 py-2.5 hover:text-primary"
+                >
+                  <span className="font-medium">{fullName(r.athlete)}</span>
+                  <span className="flex flex-wrap gap-1.5">
+                    {r.alerts.kinds.map((k) => (
+                      <Badge
+                        key={k}
+                        variant="outline"
+                        className="bg-amber-500/10 text-amber-700 border-amber-500/20"
+                      >
+                        {ALERT_LABELS[k]}
+                      </Badge>
+                    ))}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      <h2 className="mb-3 font-semibold">מתאמנים</h2>
+      <RosterFilters coaches={coaches} showCoachFilter={user.role === "owner"} />
+
+      {filtered.length === 0 ? (
+        <Card className="p-8 text-center text-muted-foreground">
+          {isFiltered
+            ? "אין מתאמנים התואמים לסינון."
+            : "טרם שויכו אליך מתאמנים."}
+        </Card>
+      ) : (
+        <>
+          {isFiltered && (
+            <p className="mb-3 text-sm text-muted-foreground">
+              {filtered.length} מתוך {roster.length} מתאמנים
+            </p>
+          )}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((row) => (
+              <AthleteCard key={row.athlete.id} row={row} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
