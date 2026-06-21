@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AthleteCard } from "@/components/athlete-card";
 import { RosterFilters } from "@/components/roster-filters";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { currentUser, listUsers } from "@/lib/auth";
 import { getRoster, type RosterRow } from "@/lib/queries";
@@ -79,13 +80,18 @@ export default async function Home({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">סקירת הסטודיו</h1>
-        <p className="text-sm text-muted-foreground">
-          {user.role === "owner"
-            ? "כל המתאמנים בסטודיו."
-            : `המתאמנים שלך, ${user.name}.`}
-        </p>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">סקירת הסטודיו</h1>
+          <p className="text-sm text-muted-foreground">
+            {user.role === "owner"
+              ? "כל המתאמנים בסטודיו."
+              : `המתאמנים שלך, ${user.name}.`}
+          </p>
+        </div>
+        <Link href="/athletes/new" className={buttonVariants()}>
+          הוספת מתאמן
+        </Link>
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
