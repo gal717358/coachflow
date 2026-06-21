@@ -29,7 +29,7 @@ export default async function GoalsPage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>Add Goal</CardTitle>
+            <CardTitle>הוספת מטרה</CardTitle>
           </CardHeader>
           <CardContent>
             <GoalForm athleteId={id} />
@@ -39,11 +39,11 @@ export default async function GoalsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Goals</CardTitle>
+          <CardTitle>מטרות</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {goals.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No goals yet.</p>
+            <p className="text-sm text-muted-foreground">אין מטרות עדיין.</p>
           ) : (
             goals.map((g) => {
               const pct = goalPercent(g.current_value, g.target_value);
@@ -70,8 +70,8 @@ export default async function GoalsPage({
                     <span>
                       {g.current_value ?? "—"} / {g.target_value ?? "—"}
                     </span>
-                    {g.horizon_days ? <span>{g.horizon_days}-day</span> : null}
-                    <span>Due {formatDate(g.due_date)}</span>
+                    {g.horizon_days ? <span>{g.horizon_days} ימים</span> : null}
+                    <span>יעד {formatDate(g.due_date)}</span>
                   </div>
 
                   {pct != null && (

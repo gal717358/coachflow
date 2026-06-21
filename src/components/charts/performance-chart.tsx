@@ -29,7 +29,7 @@ export function PerformanceChart({
   if (data.length < 2) {
     return (
       <p className="py-12 text-center text-sm text-muted-foreground">
-        Log at least two dated entries to chart 1RM progression.
+        תעדו לפחות שתי רשומות מתוארכות להצגת התקדמות ה-1RM.
       </p>
     );
   }

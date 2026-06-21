@@ -25,11 +25,11 @@ export function PerformanceForm({ athleteId }: { athleteId: string }) {
     <form ref={ref} action={formAction} className="space-y-4">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="grid gap-2">
-          <Label htmlFor="date">Date</Label>
+          <Label htmlFor="date">תאריך</Label>
           <Input id="date" name="date" type="date" required />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="exercise">Exercise</Label>
+          <Label htmlFor="exercise">תרגיל</Label>
           <select id="exercise" name="exercise" className={selectClass} defaultValue="squat">
             {EXERCISES.map((e) => (
               <option key={e} value={e}>
@@ -39,17 +39,17 @@ export function PerformanceForm({ athleteId }: { athleteId: string }) {
           </select>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="weight">Weight (kg)</Label>
+          <Label htmlFor="weight">משקל (ק"ג)</Label>
           <Input id="weight" name="weight" type="number" step="any" required />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="reps">Reps</Label>
+          <Label htmlFor="reps">חזרות</Label>
           <Input id="reps" name="reps" type="number" min="1" required />
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <SubmitButton>Add entry</SubmitButton>
-        <FormMessage state={state} success="Entry added. Estimated 1RM computed automatically." />
+        <SubmitButton>הוסף רשומה</SubmitButton>
+        <FormMessage state={state} success="הרשומה נוספה. 1RM משוער חושב אוטומטית." />
       </div>
     </form>
   );

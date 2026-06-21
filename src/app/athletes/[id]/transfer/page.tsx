@@ -68,10 +68,10 @@ export default async function TransferPage({
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <CardTitle>Handoff Summary</CardTitle>
+              <CardTitle>סיכום העברה</CardTitle>
               <p className="mt-1 text-sm text-muted-foreground">
-                Auto-generated from assessments, goals, ratings, personality, and
-                notes. Share this when transferring the athlete to another coach.
+                נוצר אוטומטית מהערכות, מטרות, דירוגים, אישיות והערות. שתפו בעת
+                העברת המתאמן למאמן אחר.
               </p>
             </div>
             <CopySummaryButton text={text} />
@@ -80,33 +80,33 @@ export default async function TransferPage({
         <CardContent className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
             <section className="space-y-4">
-              <h3 className="font-semibold">Professional Summary</h3>
+              <h3 className="font-semibold">סיכום מקצועי</h3>
               <div className="text-sm">
-                <span className="text-muted-foreground">Current level: </span>
+                <span className="text-muted-foreground">רמה נוכחית: </span>
                 <span className="font-medium">
                   {handoff.professional.currentLevel}
                 </span>
               </div>
-              <SummaryList title="Strengths" items={handoff.professional.strengths} />
-              <SummaryList title="Weaknesses" items={handoff.professional.weaknesses} />
+              <SummaryList title="חוזקות" items={handoff.professional.strengths} />
+              <SummaryList title="חולשות" items={handoff.professional.weaknesses} />
               <SummaryList
-                title="Injury considerations"
+                title="שיקולי פציעה"
                 items={handoff.professional.injuries}
               />
             </section>
 
             <section className="space-y-4">
-              <h3 className="font-semibold">Personality Summary</h3>
+              <h3 className="font-semibold">סיכום אישיות</h3>
               <SummaryList
-                title="Motivation triggers"
+                title="טריגרים למוטיבציה"
                 items={handoff.personality.motivationTriggers}
               />
               <SummaryList
-                title="Communication preferences"
+                title="העדפות תקשורת"
                 items={handoff.personality.communication}
               />
               <SummaryList
-                title="Retention risks"
+                title="סיכוני נטישה"
                 items={handoff.personality.retentionRisks}
               />
             </section>
@@ -116,7 +116,7 @@ export default async function TransferPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Reassign Coaches</CardTitle>
+          <CardTitle>שיוך מאמנים מחדש</CardTitle>
         </CardHeader>
         <CardContent>
           {isOwner ? (
@@ -128,12 +128,12 @@ export default async function TransferPage({
             />
           ) : (
             <p className="text-sm text-muted-foreground">
-              Current coaches:{" "}
+              מאמנים נוכחיים:{" "}
               <span className="font-medium text-foreground">
                 {snap.primaryCoach?.name ?? "—"}
               </span>
-              {snap.secondaryCoach ? ` & ${snap.secondaryCoach.name}` : ""}.
-              Only the studio owner can reassign coaches.
+              {snap.secondaryCoach ? ` ו${snap.secondaryCoach.name}` : ""}. רק
+              בעל הסטודיו יכול לשייך מאמנים מחדש.
             </p>
           )}
         </CardContent>

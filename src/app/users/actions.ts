@@ -15,7 +15,7 @@ const ROLES = ["owner", "coach"];
 async function requireOwner() {
   const user = await currentUser();
   if (!user || user.role !== "owner")
-    return { error: "Only the studio owner can manage users." as const };
+    return { error: "רק בעל הסטודיו יכול לנהל משתמשים." as const };
   return { user };
 }
 
@@ -35,11 +35,11 @@ export async function createUser(
   const password = str(formData.get("password"));
   const role = str(formData.get("role"));
 
-  if (!name) return { ok: false, error: "Name is required." };
-  if (!email) return { ok: false, error: "Email is required." };
+  if (!name) return { ok: false, error: "שם הוא שדה חובה." };
+  if (!email) return { ok: false, error: "אימייל הוא שדה חובה." };
   if (password.length < 6)
-    return { ok: false, error: "Password must be at least 6 characters." };
-  if (!ROLES.includes(role)) return { ok: false, error: "Invalid role." };
+    return { ok: false, error: "הסיסמה חייבת להכיל לפחות 6 תווים." };
+  if (!ROLES.includes(role)) return { ok: false, error: "תפקיד לא תקין." };
 
   const admin = createAdminClient();
   // email_confirm so the account can sign in immediately; the
@@ -64,10 +64,10 @@ export async function updateUserRole(
   const guard = await requireOwner();
   if ("error" in guard) return { ok: false, error: guard.error };
   if (userId === guard.user.id)
-    return { ok: false, error: "You can't change your own role." };
+    return { ok: false, error: "אינך יכול לשנות את התפקיד של עצמך." };
 
   const role = str(formData.get("role"));
-  if (!ROLES.includes(role)) return { ok: false, error: "Invalid role." };
+  if (!ROLES.includes(role)) return { ok: false, error: "תפקיד לא תקין." };
 
   // Regular session client → exercises the RLS users_modify (owner) policy.
   const supabase = await createClient();
@@ -90,7 +90,7 @@ export async function deleteUser(
   const guard = await requireOwner();
   if ("error" in guard) return { ok: false, error: guard.error };
   if (userId === guard.user.id)
-    return { ok: false, error: "You can't delete your own account." };
+    return { ok: false, error: "אינך יכול למחוק את החשבון של עצמך." };
 
   // Deleting the auth user cascades to public.users; any athletes they coached
   // have their coach set to null (FK on delete set null) — reassign via Transfer.

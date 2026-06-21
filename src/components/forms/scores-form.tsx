@@ -11,11 +11,11 @@ import { SubmitButton } from "./submit-button";
 const initial: FormState = { ok: false };
 
 const FIELDS: [key: keyof AthleteScores, label: string][] = [
-  ["consistency", "Consistency"],
-  ["discipline", "Discipline"],
-  ["technique", "Technique"],
-  ["progress", "Progress"],
-  ["engagement", "Engagement"],
+  ["consistency", "עקביות"],
+  ["discipline", "משמעת"],
+  ["technique", "טכניקה"],
+  ["progress", "התקדמות"],
+  ["engagement", "מעורבות"],
 ];
 
 export function ScoresForm({
@@ -47,11 +47,11 @@ export function ScoresForm({
         ))}
       </div>
       <div className="flex items-center gap-3">
-        <SubmitButton>Save rating</SubmitButton>
-        <FormMessage state={state} success="Saved." />
+        <SubmitButton>שמור דירוג</SubmitButton>
+        <FormMessage state={state} success="נשמר." />
         {scores?.overall != null && (
           <span className="text-sm text-muted-foreground">
-            Overall: <span className="font-medium text-foreground">{scores.overall}</span>/10
+            כולל: <span className="font-medium text-foreground">{scores.overall}</span>/10
           </span>
         )}
       </div>

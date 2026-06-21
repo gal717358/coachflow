@@ -11,9 +11,9 @@ export default async function UsersPage() {
     return (
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <Card className="p-8 text-center text-muted-foreground">
-          Only the studio owner can manage users.{" "}
+          רק בעל הסטודיו יכול לנהל משתמשים.{" "}
           <Link href="/" className="text-primary underline">
-            Back to dashboard
+            חזרה ללוח הבקרה
           </Link>
         </Card>
       </div>
@@ -25,15 +25,15 @@ export default async function UsersPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
+        <h1 className="text-2xl font-bold tracking-tight">משתמשים</h1>
         <p className="text-sm text-muted-foreground">
-          Manage studio owners and coaches.
+          ניהול בעלים ומאמנים בסטודיו.
         </p>
       </div>
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Add User</CardTitle>
+          <CardTitle>הוספת משתמש</CardTitle>
         </CardHeader>
         <CardContent>
           <CreateUserForm />
@@ -42,17 +42,17 @@ export default async function UsersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>All Users</CardTitle>
+          <CardTitle>כל המשתמשים</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b text-start text-muted-foreground">
-                  <th className="py-2 pe-4 font-medium">Name</th>
-                  <th className="py-2 pe-4 font-medium">Email</th>
-                  <th className="py-2 pe-4 font-medium">Role</th>
-                  <th className="py-2 ps-4 text-end font-medium">Actions</th>
+                  <th className="py-2 pe-4 font-medium">שם</th>
+                  <th className="py-2 pe-4 font-medium">אימייל</th>
+                  <th className="py-2 pe-4 font-medium">תפקיד</th>
+                  <th className="py-2 ps-4 text-end font-medium">פעולות</th>
                 </tr>
               </thead>
               <tbody>
@@ -62,7 +62,7 @@ export default async function UsersPage() {
                     <td className="py-3 pe-4 text-muted-foreground">{u.email}</td>
                     <td className="py-3 pe-4">
                       <Badge variant={u.role === "owner" ? "default" : "secondary"}>
-                        {u.role}
+                        {u.role === "owner" ? "בעלים" : "מאמן"}
                       </Badge>
                     </td>
                     <td className="py-3 ps-4">

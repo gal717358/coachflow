@@ -27,7 +27,9 @@ export async function SiteHeader() {
             )}
             <span>
               {user.name}{" "}
-              <span className="text-muted-foreground">({user.role})</span>
+              <span className="text-muted-foreground">
+                ({user.role === "owner" ? "בעלים" : "מאמן"})
+              </span>
             </span>
             <form action={signOut}>
               <Button type="submit" variant="outline" size="sm">

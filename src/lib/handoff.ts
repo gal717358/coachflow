@@ -4,7 +4,9 @@
 
 import {
   ASSESSMENT_DIMENSIONS,
+  COMMUNICATION_LABELS,
   EXPERIENCE_LABELS,
+  MOTIVATION_STYLE_LABELS,
   MOVEMENT_ISSUE_LABELS,
   movementLabel,
   titleCase,
@@ -76,8 +78,8 @@ export function buildHandoff(input: HandoffInput): Handoff {
   const avg = avgScore(a);
   const levelParts: string[] = [];
   if (a?.experience_level) levelParts.push(EXPERIENCE_LABELS[a.experience_level]);
-  if (avg != null) levelParts.push(`avg fitness ${avg}/10`);
-  const currentLevel = levelParts.length ? levelParts.join(" · ") : "Not yet assessed";
+  if (avg != null) levelParts.push(`כושר ממוצע ${avg}/10`);
+  const currentLevel = levelParts.length ? levelParts.join(" · ") : "טרם הוערך";
 
   // --- Strengths -----------------------------------------------------------
   const strengths = [...(insights?.strengths ?? [])];
@@ -111,34 +113,38 @@ export function buildHandoff(input: HandoffInput): Handoff {
   if (latestNote?.category === "injury") injuries.push(latestNote.note);
 
   // --- Motivation triggers -------------------------------------------------
-  const motivationTriggers = (personality?.motivation_styles ?? []).map(titleCase);
+  const motivationTriggers = (personality?.motivation_styles ?? []).map(
+    (m) => MOTIVATION_STYLE_LABELS[m] ?? titleCase(m),
+  );
 
   // --- Communication preferences ------------------------------------------
   const communication: string[] = [];
   if (personality?.communication_style)
-    communication.push(`Prefers ${titleCase(personality.communication_style)} communication`);
+    communication.push(
+      `מעדיף/ה תקשורת ${COMMUNICATION_LABELS[personality.communication_style] ?? personality.communication_style}`,
+    );
   if (personality?.notes) communication.push(personality.notes);
 
   // --- Retention risks -----------------------------------------------------
   const retentionRisks: string[] = [];
   if (status === "frozen")
-    retentionRisks.push("Membership is frozen — re-engagement needed on return.");
+    retentionRisks.push("המנוי מוקפא — נדרשת חזרה לקשר עם החזרה.");
   if (status === "former")
-    retentionRisks.push("Former member — win-back conversation required.");
+    retentionRisks.push("מתאמן/ת לשעבר — נדרשת שיחת החזרה.");
   if (scores?.consistency != null && scores.consistency <= 5)
-    retentionRisks.push(`Low consistency rating (${scores.consistency}/10).`);
+    retentionRisks.push(`דירוג עקביות נמוך (${scores.consistency}/10).`);
   if (scores?.engagement != null && scores.engagement <= 5)
-    retentionRisks.push(`Low engagement rating (${scores.engagement}/10).`);
+    retentionRisks.push(`דירוג מעורבות נמוך (${scores.engagement}/10).`);
   if (scores?.progress != null && scores.progress <= 5)
-    retentionRisks.push(`Limited recent progress (${scores.progress}/10).`);
+    retentionRisks.push(`התקדמות מועטה לאחרונה (${scores.progress}/10).`);
   const noteAge = daysSince(latestNote?.created_at ?? null);
   if (noteAge == null)
-    retentionRisks.push("No coach notes on record yet.");
+    retentionRisks.push("אין הערות מאמן רשומות עדיין.");
   else if (noteAge > 30)
-    retentionRisks.push(`No coach contact logged in ${noteAge} days.`);
+    retentionRisks.push(`לא תועד קשר מאמן ב-${noteAge} הימים האחרונים.`);
   if (topGoal) {
     const overdue = topGoal.due_date && new Date(topGoal.due_date) < new Date();
-    if (overdue) retentionRisks.push(`Active goal "${topGoal.title}" is past due.`);
+    if (overdue) retentionRisks.push(`מטרה פעילה "${topGoal.title}" עברה את תאריך היעד.`);
   }
 
   return {
@@ -152,17 +158,17 @@ export function handoffToText(name: string, h: Handoff): string {
   const section = (title: string, items: string[]) =>
     `${title}:\n${items.length ? items.map((i) => `  • ${i}`).join("\n") : "  • —"}`;
   return [
-    `ATHLETE HANDOFF — ${name}`,
+    `סיכום העברת מתאמן — ${name}`,
     "",
-    "PROFESSIONAL SUMMARY",
-    `Current level: ${h.professional.currentLevel}`,
-    section("Strengths", h.professional.strengths),
-    section("Weaknesses", h.professional.weaknesses),
-    section("Injury considerations", h.professional.injuries),
+    "סיכום מקצועי",
+    `רמה נוכחית: ${h.professional.currentLevel}`,
+    section("חוזקות", h.professional.strengths),
+    section("חולשות", h.professional.weaknesses),
+    section("שיקולי פציעה", h.professional.injuries),
     "",
-    "PERSONALITY SUMMARY",
-    section("Motivation triggers", h.personality.motivationTriggers),
-    section("Communication preferences", h.personality.communication),
-    section("Retention risks", h.personality.retentionRisks),
+    "סיכום אישיות",
+    section("טריגרים למוטיבציה", h.personality.motivationTriggers),
+    section("העדפות תקשורת", h.personality.communication),
+    section("סיכוני נטישה", h.personality.retentionRisks),
   ].join("\n");
 }

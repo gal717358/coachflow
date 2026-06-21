@@ -21,35 +21,35 @@ export function CreateUserForm() {
     <form ref={ref} action={formAction} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">שם</Label>
           <Input id="name" name="name" required />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">אימייל</Label>
           <Input id="email" name="email" type="email" required />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="password">Temporary password</Label>
+          <Label htmlFor="password">סיסמה זמנית</Label>
           <Input
             id="password"
             name="password"
             type="text"
             minLength={6}
-            placeholder="min 6 characters"
+            placeholder="לפחות 6 תווים"
             required
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="role">Role</Label>
+          <Label htmlFor="role">תפקיד</Label>
           <select id="role" name="role" className={selectClass} defaultValue="coach">
-            <option value="coach">Coach</option>
-            <option value="owner">Owner</option>
+            <option value="coach">מאמן</option>
+            <option value="owner">בעלים</option>
           </select>
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <SubmitButton>Create user</SubmitButton>
-        <FormMessage state={state} success="User created." />
+        <SubmitButton>צור משתמש</SubmitButton>
+        <FormMessage state={state} success="המשתמש נוצר." />
       </div>
     </form>
   );

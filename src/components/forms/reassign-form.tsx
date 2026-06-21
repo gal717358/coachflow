@@ -27,41 +27,41 @@ export function ReassignForm({
     <form action={formAction} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
-          <Label htmlFor="primary_coach_id">Primary coach</Label>
+          <Label htmlFor="primary_coach_id">מאמן ראשי</Label>
           <select
             id="primary_coach_id"
             name="primary_coach_id"
             className={selectClass}
             defaultValue={primaryId ?? ""}
           >
-            <option value="">— Select —</option>
+            <option value="">— בחר —</option>
             {users.map((u) => (
               <option key={u.id} value={u.id}>
-                {u.name} ({u.role})
+                {u.name} ({u.role === "owner" ? "בעלים" : "מאמן"})
               </option>
             ))}
           </select>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="secondary_coach_id">Secondary coach (optional)</Label>
+          <Label htmlFor="secondary_coach_id">מאמן משני (אופציונלי)</Label>
           <select
             id="secondary_coach_id"
             name="secondary_coach_id"
             className={selectClass}
             defaultValue={secondaryId ?? ""}
           >
-            <option value="">— None —</option>
+            <option value="">— ללא —</option>
             {users.map((u) => (
               <option key={u.id} value={u.id}>
-                {u.name} ({u.role})
+                {u.name} ({u.role === "owner" ? "בעלים" : "מאמן"})
               </option>
             ))}
           </select>
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <SubmitButton>Save assignment</SubmitButton>
-        <FormMessage state={state} success="Coaches reassigned." />
+        <SubmitButton>שמור שיוך</SubmitButton>
+        <FormMessage state={state} success="המאמנים שויכו מחדש." />
       </div>
     </form>
   );

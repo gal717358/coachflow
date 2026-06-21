@@ -17,19 +17,19 @@ insert into auth.users (
    'authenticated', 'authenticated', 'owner@studio.test',
    crypt('coachflow123', gen_salt('bf')), now(),
    '{"provider":"email","providers":["email"]}',
-   '{"name":"Dana Klein","role":"owner"}', now(), now(),
+   '{"name":"דנה כהן","role":"owner"}', now(), now(),
    '', '', '', '', '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '22222222-2222-2222-2222-222222222222',
    'authenticated', 'authenticated', 'john@studio.test',
    crypt('coachflow123', gen_salt('bf')), now(),
    '{"provider":"email","providers":["email"]}',
-   '{"name":"John Park","role":"coach"}', now(), now(),
+   '{"name":"יוסי ברק","role":"coach"}', now(), now(),
    '', '', '', '', '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '33333333-3333-3333-3333-333333333333',
    'authenticated', 'authenticated', 'maya@studio.test',
    crypt('coachflow123', gen_salt('bf')), now(),
    '{"provider":"email","providers":["email"]}',
-   '{"name":"Maya Stern","role":"coach"}', now(), now(),
+   '{"name":"מאיה רז","role":"coach"}', now(), now(),
    '', '', '', '', '', '', '', '')
 on conflict (id) do nothing;
 
@@ -53,26 +53,26 @@ on conflict do nothing;
 -- Athletes --------------------------------------------------------------------
 insert into public.athletes
   (id, first_name, last_name, phone, email, gender, birth_date, height_cm, start_date, status, primary_coach_id, secondary_coach_id) values
-  ('a0000001-0000-0000-0000-000000000001', 'Alex',  'Rivera',  '+972-50-1112233', 'alex@example.com',  'male',   '1992-04-15', 178.0, '2025-09-01', 'active', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333'),
-  ('a0000002-0000-0000-0000-000000000002', 'Noa',   'Levi',    '+972-52-2223344', 'noa@example.com',   'female', '1996-11-02', 165.0, '2025-10-15', 'active', '33333333-3333-3333-3333-333333333333', null),
-  ('a0000003-0000-0000-0000-000000000003', 'Tom',   'Becker',  '+972-54-3334455', 'tom@example.com',   'male',   '1988-01-20', 183.0, '2024-06-10', 'frozen', '22222222-2222-2222-2222-222222222222', null),
-  ('a0000004-0000-0000-0000-000000000004', 'Shir',  'Cohen',   '+972-58-4445566', 'shir@example.com',  'female', '2000-07-30', 170.0, '2026-01-05', 'active', '33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222')
+  ('a0000001-0000-0000-0000-000000000001', 'איתי',  'שגב',  '+972-50-1112233', 'alex@example.com',  'male',   '1992-04-15', 178.0, '2025-09-01', 'active', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333'),
+  ('a0000002-0000-0000-0000-000000000002', 'נועה',   'לוי',    '+972-52-2223344', 'noa@example.com',   'female', '1996-11-02', 165.0, '2025-10-15', 'active', '33333333-3333-3333-3333-333333333333', null),
+  ('a0000003-0000-0000-0000-000000000003', 'תום',   'בקר',  '+972-54-3334455', 'tom@example.com',   'male',   '1988-01-20', 183.0, '2024-06-10', 'frozen', '22222222-2222-2222-2222-222222222222', null),
+  ('a0000004-0000-0000-0000-000000000004', 'שיר',  'כהן',   '+972-58-4445566', 'shir@example.com',  'female', '2000-07-30', 170.0, '2026-01-05', 'active', '33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222')
 on conflict (id) do nothing;
 
 -- Personality -----------------------------------------------------------------
 insert into public.athlete_personality (athlete_id, motivation_styles, communication_style, notes) values
-  ('a0000001-0000-0000-0000-000000000001', '{competitive,data-driven,achievement-focused}', 'technical',  'Loves tracking numbers. Responds best to positive reinforcement and measurable goals.'),
-  ('a0000002-0000-0000-0000-000000000002', '{needs-encouragement,social}', 'supportive', 'Gets discouraged easily. Performs better with clear structure and frequent check-ins.'),
-  ('a0000003-0000-0000-0000-000000000003', '{independent,achievement-focused}', 'direct', 'Self-motivated, prefers minimal hand-holding. Travels often for work.'),
-  ('a0000004-0000-0000-0000-000000000004', '{social,needs-encouragement,competitive}', 'high-energy', 'New athlete, very enthusiastic. Thrives in group settings.')
+  ('a0000001-0000-0000-0000-000000000001', '{competitive,data-driven,achievement-focused}', 'technical',  'אוהב לעקוב אחרי מספרים. מגיב הכי טוב לחיזוק חיובי ולמטרות מדידות.'),
+  ('a0000002-0000-0000-0000-000000000002', '{needs-encouragement,social}', 'supportive', 'מתייאשת בקלות. מתפקדת טוב יותר עם מבנה ברור ובדיקות תכופות.'),
+  ('a0000003-0000-0000-0000-000000000003', '{independent,achievement-focused}', 'direct', 'בעל מוטיבציה עצמית, מעדיף ליווי מינימלי. נוסע הרבה לעבודה.'),
+  ('a0000004-0000-0000-0000-000000000004', '{social,needs-encouragement,competitive}', 'high-energy', 'מתאמנת חדשה, מאוד נלהבת. משגשגת בסביבה קבוצתית.')
 on conflict (athlete_id) do nothing;
 
 -- Insights --------------------------------------------------------------------
 insert into public.athlete_insights (athlete_id, strengths, improvements) values
-  ('a0000001-0000-0000-0000-000000000001', '{"Strong lower body","Excellent attendance","High motivation"}', '{"Shoulder mobility","Conditioning","Nutrition consistency"}'),
-  ('a0000002-0000-0000-0000-000000000002', '{"Great coordination","Consistent effort","Coachable"}', '{"Upper-body strength","Confidence under load","Bracing"}'),
-  ('a0000003-0000-0000-0000-000000000003', '{"Advanced technique","Strong pull","Independent"}', '{"Attendance consistency","Mobility","Recovery habits"}'),
-  ('a0000004-0000-0000-0000-000000000004', '{"High energy","Fast learner","Positive attitude"}', '{"Baseline strength","Movement literacy","Pacing"}')
+  ('a0000001-0000-0000-0000-000000000001', '{"פלג גוף תחתון חזק","נוכחות מצוינת","מוטיבציה גבוהה"}', '{"ניידות כתפיים","סיבולת","עקביות תזונתית"}'),
+  ('a0000002-0000-0000-0000-000000000002', '{"קואורדינציה מצוינת","מאמץ עקבי","פתוחה לאימון"}', '{"כוח פלג גוף עליון","ביטחון תחת עומס","נעילת ליבה"}'),
+  ('a0000003-0000-0000-0000-000000000003', '{"טכניקה מתקדמת","משיכה חזקה","עצמאי"}', '{"עקביות בנוכחות","ניידות","הרגלי התאוששות"}'),
+  ('a0000004-0000-0000-0000-000000000004', '{"אנרגיה גבוהה","לומדת מהר","גישה חיובית"}', '{"כוח בסיסי","שליטה בתנועה","קצב"}')
 on conflict (athlete_id) do nothing;
 
 -- Body measurements (multiple dates → trend charts) ---------------------------
@@ -112,36 +112,36 @@ on conflict do nothing;
 -- Fitness assessments ---------------------------------------------------------
 insert into public.assessments
   (athlete_id, date, strength_score, endurance_score, mobility_score, stability_score, coordination_score, awareness_score, experience_level, injury_notes) values
-  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 8, 6, 5, 7, 7, 7, 'intermediate', 'Lower back sensitivity under heavy load. No active injuries.'),
-  ('a0000002-0000-0000-0000-000000000002', '2026-05-15', 4, 6, 7, 6, 8, 6, 'beginner',     'No injury history.'),
-  ('a0000003-0000-0000-0000-000000000003', '2025-06-10', 9, 7, 6, 8, 8, 9, 'advanced',     'Previous ACL reconstruction (right knee, 2019).'),
-  ('a0000004-0000-0000-0000-000000000004', '2026-01-20', 3, 5, 6, 5, 6, 5, 'beginner',     'No injury history.')
+  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 8, 6, 5, 7, 7, 7, 'intermediate', 'רגישות בגב תחתון תחת עומס כבד. אין פציעות פעילות.'),
+  ('a0000002-0000-0000-0000-000000000002', '2026-05-15', 4, 6, 7, 6, 8, 6, 'beginner',     'אין היסטוריית פציעות.'),
+  ('a0000003-0000-0000-0000-000000000003', '2025-06-10', 9, 7, 6, 8, 8, 9, 'advanced',     'שחזור רצועה צולבת קדמית בעבר (ברך ימין, 2019).'),
+  ('a0000004-0000-0000-0000-000000000004', '2026-01-20', 3, 5, 6, 5, 6, 5, 'beginner',     'אין היסטוריית פציעות.')
 on conflict do nothing;
 
 -- Movement assessments --------------------------------------------------------
 insert into public.movement_assessments (athlete_id, date, movement, score, notes, issues) values
-  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 'squat',        7, 'Good depth, slight knee valgus at bottom.', '{knee_valgus}'),
-  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 'overhead_press', 5, 'Limited overhead range.', '{shoulder_restriction}'),
-  ('a0000002-0000-0000-0000-000000000002', '2026-05-15', 'deadlift',     5, 'Needs work on bracing and hip hinge.', '{poor_bracing}'),
-  ('a0000003-0000-0000-0000-000000000003', '2025-06-10', 'deadlift',     9, 'Excellent technique.', '{}')
+  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 'squat',        7, 'עומק טוב, קריסת ברך קלה פנימה בתחתית.', '{knee_valgus}'),
+  ('a0000001-0000-0000-0000-000000000001', '2026-03-01', 'overhead_press', 5, 'טווח מוגבל מעל הראש.', '{shoulder_restriction}'),
+  ('a0000002-0000-0000-0000-000000000002', '2026-05-15', 'deadlift',     5, 'צריך לעבוד על נעילת ליבה וצירוף ירך.', '{poor_bracing}'),
+  ('a0000003-0000-0000-0000-000000000003', '2025-06-10', 'deadlift',     9, 'טכניקה מצוינת.', '{}')
 on conflict do nothing;
 
 -- Goals -----------------------------------------------------------------------
 insert into public.goals (athlete_id, title, description, target_value, current_value, due_date, horizon_days, status) values
-  ('a0000001-0000-0000-0000-000000000001', 'Squat 150kg', 'Hit a 150kg back squat for a single.', 150, 140, '2026-09-01', 90, 'in_progress'),
-  ('a0000001-0000-0000-0000-000000000001', 'Drop to 16% body fat', 'Lean down while maintaining strength.', 16, 17.5, '2026-12-01', 180, 'in_progress'),
-  ('a0000002-0000-0000-0000-000000000002', 'First strict pull-up', 'Achieve one unassisted pull-up.', 1, 0, '2026-07-15', 30, 'in_progress'),
-  ('a0000003-0000-0000-0000-000000000003', 'Return to consistent training', 'Re-establish 3x/week attendance.', 3, 1, '2026-08-01', 90, 'not_started'),
-  ('a0000004-0000-0000-0000-000000000004', 'Learn the 4 main lifts', 'Confident technique on squat/DL/bench/pull.', 4, 2, '2026-04-05', 90, 'completed')
+  ('a0000001-0000-0000-0000-000000000001', 'סקוואט 150 ק"ג', 'סקוואט אחורי של 150 ק"ג בחזרה בודדת.', 150, 140, '2026-09-01', 90, 'in_progress'),
+  ('a0000001-0000-0000-0000-000000000001', 'ירידה ל-16% שומן', 'ירידה במשקל תוך שמירה על כוח.', 16, 17.5, '2026-12-01', 180, 'in_progress'),
+  ('a0000002-0000-0000-0000-000000000002', 'מתח ראשון', 'ביצוע מתח אחד ללא עזרה.', 1, 0, '2026-07-15', 30, 'in_progress'),
+  ('a0000003-0000-0000-0000-000000000003', 'חזרה לאימון עקבי', 'חזרה לנוכחות של 3 פעמים בשבוע.', 3, 1, '2026-08-01', 90, 'not_started'),
+  ('a0000004-0000-0000-0000-000000000004', 'ללמוד את 4 התרגילים המרכזיים', 'טכניקה בטוחה בסקוואט/דדליפט/לחיצת חזה/מתח.', 4, 2, '2026-04-05', 90, 'completed')
 on conflict do nothing;
 
 -- Coach notes -----------------------------------------------------------------
 insert into public.coach_notes (athlete_id, coach_id, category, note, created_at) values
-  ('a0000001-0000-0000-0000-000000000001', '22222222-2222-2222-2222-222222222222', 'training',   'Significant improvement in squat depth. Ready to push intensity next block.', '2026-06-05 09:00+00'),
-  ('a0000001-0000-0000-0000-000000000001', '22222222-2222-2222-2222-222222222222', 'nutrition',  'Discussed protein intake; aiming for 160g/day.', '2026-05-20 09:00+00'),
-  ('a0000002-0000-0000-0000-000000000002', '33333333-3333-3333-3333-333333333333', 'motivation', 'Was discouraged after a hard session — reframed progress around pull-up negatives. Left motivated.', '2026-05-22 17:00+00'),
-  ('a0000003-0000-0000-0000-000000000003', '22222222-2222-2222-2222-222222222222', 'general',    'Membership frozen due to travel. Plans to return in August.', '2026-04-02 12:00+00'),
-  ('a0000004-0000-0000-0000-000000000004', '33333333-3333-3333-3333-333333333333', 'training',   'Completed onboarding. Solid grasp of squat and deadlift basics.', '2026-04-10 10:00+00')
+  ('a0000001-0000-0000-0000-000000000001', '22222222-2222-2222-2222-222222222222', 'training',   'שיפור משמעותי בעומק הסקוואט. מוכן להעלות עצימות בבלוק הבא.', '2026-06-05 09:00+00'),
+  ('a0000001-0000-0000-0000-000000000001', '22222222-2222-2222-2222-222222222222', 'nutrition',  'שוחחנו על צריכת חלבון; יעד 160 גרם ביום.', '2026-05-20 09:00+00'),
+  ('a0000002-0000-0000-0000-000000000002', '33333333-3333-3333-3333-333333333333', 'motivation', 'הייתה מיואשת אחרי אימון קשה — מסגרנו מחדש את ההתקדמות סביב מתח שלילי. עזבה עם מוטיבציה.', '2026-05-22 17:00+00'),
+  ('a0000003-0000-0000-0000-000000000003', '22222222-2222-2222-2222-222222222222', 'general',    'המנוי הוקפא עקב נסיעות. מתכנן לחזור באוגוסט.', '2026-04-02 12:00+00'),
+  ('a0000004-0000-0000-0000-000000000004', '33333333-3333-3333-3333-333333333333', 'training',   'השלימה קליטה. שליטה טובה ביסודות הסקוואט והדדליפט.', '2026-04-10 10:00+00')
 on conflict do nothing;
 
 -- Athlete scores --------------------------------------------------------------

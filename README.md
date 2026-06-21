@@ -13,6 +13,10 @@ the **Athlete Snapshot** screen end-to-end on real Supabase.
 Built:
 
 - **Next.js 16** (App Router, TS) · **Tailwind v4** · **ShadCN UI** · **Supabase**
+- **Hebrew UI, RTL** — the whole app is in Hebrew with `dir="rtl"` (Rubik font,
+  `he-IL` dates). Layout uses logical CSS properties (`ps`/`pe`, `text-start`/
+  `end`, `border-s`) so it mirrors correctly; enum labels live in
+  `src/lib/format.ts` and demo seed data is Hebrew too.
 - Full Postgres schema + seed for all PRD modules (`supabase/`)
 - **Real Supabase Auth (email + password)** + **Row Level Security**
   - Login at `/login` (middleware redirects unauthenticated users there); header

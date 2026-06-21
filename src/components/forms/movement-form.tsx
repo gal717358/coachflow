@@ -27,11 +27,11 @@ export function MovementForm({ athleteId }: { athleteId: string }) {
     <form ref={ref} action={formAction} className="space-y-4">
       <div className="grid grid-cols-2 gap-4 sm:max-w-md">
         <div className="grid gap-2">
-          <Label htmlFor="m-date">Date</Label>
+          <Label htmlFor="m-date">תאריך</Label>
           <Input id="m-date" name="date" type="date" required />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="movement">Movement</Label>
+          <Label htmlFor="movement">תנועה</Label>
           <select id="movement" name="movement" className={selectClass} defaultValue="squat">
             {MOVEMENTS.map((m) => (
               <option key={m} value={m}>
@@ -43,12 +43,12 @@ export function MovementForm({ athleteId }: { athleteId: string }) {
       </div>
 
       <div className="grid gap-2 sm:max-w-[8rem]">
-        <Label htmlFor="score">Score (1–10)</Label>
+        <Label htmlFor="score">ציון (1–10)</Label>
         <Input id="score" name="score" type="number" min="1" max="10" step="1" />
       </div>
 
       <div>
-        <div className="mb-2 text-sm font-medium">Movement issues</div>
+        <div className="mb-2 text-sm font-medium">ליקויי תנועה</div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {Object.entries(MOVEMENT_ISSUE_LABELS).map(([value, label]) => (
             <label key={value} className="flex items-center gap-2 text-sm">
@@ -65,13 +65,13 @@ export function MovementForm({ athleteId }: { athleteId: string }) {
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="notes">Notes</Label>
-        <Textarea id="notes" name="notes" rows={2} placeholder="Technique observations" />
+        <Label htmlFor="notes">הערות</Label>
+        <Textarea id="notes" name="notes" rows={2} placeholder="תצפיות טכניקה" />
       </div>
 
       <div className="flex items-center gap-3">
-        <SubmitButton>Add movement assessment</SubmitButton>
-        <FormMessage state={state} success="Movement assessment added." />
+        <SubmitButton>הוסף הערכת תנועה</SubmitButton>
+        <FormMessage state={state} success="הערכת התנועה נוספה." />
       </div>
     </form>
   );

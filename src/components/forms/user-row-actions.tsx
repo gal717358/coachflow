@@ -26,7 +26,7 @@ export function UserRowActions({
   const [delState, delFormAction] = useActionState(delAction, initial);
 
   if (isSelf) {
-    return <span className="text-xs text-muted-foreground">You</span>;
+    return <span className="text-xs text-muted-foreground">אתה</span>;
   }
 
   return (
@@ -37,20 +37,20 @@ export function UserRowActions({
           defaultValue={user.role}
           className={`${selectClass} h-8 w-28`}
         >
-          <option value="coach">Coach</option>
-          <option value="owner">Owner</option>
+          <option value="coach">מאמן</option>
+          <option value="owner">בעלים</option>
         </select>
-        <SubmitButton>Save</SubmitButton>
+        <SubmitButton>שמור</SubmitButton>
       </form>
       <form
         action={delFormAction}
         onSubmit={(e) => {
-          if (!confirm(`Delete ${user.name}? This cannot be undone.`))
+          if (!confirm(`למחוק את ${user.name}? לא ניתן לבטל פעולה זו.`))
             e.preventDefault();
         }}
       >
         <Button type="submit" variant="outline" size="sm">
-          Delete
+          מחק
         </Button>
       </form>
       {(roleState.error || delState.error) && (

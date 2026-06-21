@@ -20,7 +20,7 @@ export default async function NotesPage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>Add Note</CardTitle>
+            <CardTitle>הוספת הערה</CardTitle>
           </CardHeader>
           <CardContent>
             <NoteForm athleteId={id} />
@@ -30,11 +30,11 @@ export default async function NotesPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle>ציר זמן</CardTitle>
         </CardHeader>
         <CardContent>
           {notes.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No notes yet.</p>
+            <p className="text-sm text-muted-foreground">אין הערות עדיין.</p>
           ) : (
             <ol className="relative space-y-5 border-s ps-5">
               {notes.map((n) => (

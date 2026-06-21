@@ -11,10 +11,10 @@ import type { Exercise, ExercisePerformance } from "@/lib/types";
 const EXERCISES: Exercise[] = ["squat", "deadlift", "bench_press", "pull_up"];
 
 const SERIES: PerfSeries[] = [
-  { key: "squat", label: "Squat", color: "var(--chart-1)" },
-  { key: "deadlift", label: "Deadlift", color: "var(--chart-2)" },
-  { key: "bench_press", label: "Bench Press", color: "var(--chart-3)" },
-  { key: "pull_up", label: "Pull-Up", color: "var(--chart-4)" },
+  { key: "squat", label: "סקוואט", color: "var(--chart-1)" },
+  { key: "deadlift", label: "דדליפט", color: "var(--chart-2)" },
+  { key: "bench_press", label: "לחיצת חזה", color: "var(--chart-3)" },
+  { key: "pull_up", label: "מתח", color: "var(--chart-4)" },
 ];
 
 /** Merge entries into one row per date with best e1RM per exercise. */
@@ -71,7 +71,7 @@ export default async function PerformancePage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>Log Lift</CardTitle>
+            <CardTitle>תיעוד הרמה</CardTitle>
           </CardHeader>
           <CardContent>
             <PerformanceForm athleteId={id} />
@@ -82,7 +82,7 @@ export default async function PerformancePage({
       {rows.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Estimated 1RM Progression</CardTitle>
+            <CardTitle>התקדמות 1RM משוער</CardTitle>
           </CardHeader>
           <CardContent>
             <PerformanceChart data={chartData} series={chartSeries} />
@@ -92,7 +92,7 @@ export default async function PerformancePage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Personal Records</CardTitle>
+          <CardTitle>שיאים אישיים</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -104,12 +104,12 @@ export default async function PerformancePage({
                     {exerciseLabel(e)}
                   </div>
                   <div className="text-lg font-semibold">
-                    {pr ? `${pr.best1rm} kg` : "—"}
+                    {pr ? `${pr.best1rm} ק"ג` : "—"}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {pr
-                      ? `best e1RM · max ${pr.maxWeight}kg · ${pr.maxReps} reps`
-                      : "no entries"}
+                      ? `שיא 1RM · מקס' ${pr.maxWeight} ק"ג · ${pr.maxReps} חזרות`
+                      : "אין רשומות"}
                   </div>
                 </div>
               );
@@ -120,21 +120,21 @@ export default async function PerformancePage({
 
       <Card>
         <CardHeader>
-          <CardTitle>History</CardTitle>
+          <CardTitle>היסטוריה</CardTitle>
         </CardHeader>
         <CardContent>
           {rows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No entries yet.</p>
+            <p className="text-sm text-muted-foreground">אין רשומות עדיין.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-start text-muted-foreground">
-                    <th className="py-2 pe-4 font-medium">Date</th>
-                    <th className="py-2 pe-4 font-medium">Exercise</th>
-                    <th className="py-2 pe-4 font-medium">Weight</th>
-                    <th className="py-2 pe-4 font-medium">Reps</th>
-                    <th className="py-2 pe-4 font-medium">Est. 1RM</th>
+                    <th className="py-2 pe-4 font-medium">תאריך</th>
+                    <th className="py-2 pe-4 font-medium">תרגיל</th>
+                    <th className="py-2 pe-4 font-medium">משקל</th>
+                    <th className="py-2 pe-4 font-medium">חזרות</th>
+                    <th className="py-2 pe-4 font-medium">1RM משוער</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -144,9 +144,9 @@ export default async function PerformancePage({
                         {formatDate(r.date)}
                       </td>
                       <td className="py-2 pe-4">{exerciseLabel(r.exercise)}</td>
-                      <td className="py-2 pe-4">{r.weight} kg</td>
+                      <td className="py-2 pe-4">{r.weight} ק"ג</td>
                       <td className="py-2 pe-4">{r.reps}</td>
-                      <td className="py-2 pe-4">{r.estimated_1rm} kg</td>
+                      <td className="py-2 pe-4">{r.estimated_1rm} ק"ג</td>
                     </tr>
                   ))}
                 </tbody>

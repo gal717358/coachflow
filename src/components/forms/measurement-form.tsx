@@ -30,7 +30,7 @@ export function MeasurementForm({ athleteId }: { athleteId: string }) {
   return (
     <form ref={ref} action={formAction} className="space-y-4">
       <div className="grid gap-2 sm:max-w-xs">
-        <Label htmlFor="date">Date</Label>
+        <Label htmlFor="date">תאריך</Label>
         <Input id="date" name="date" type="date" required />
       </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -42,8 +42,8 @@ export function MeasurementForm({ athleteId }: { athleteId: string }) {
         ))}
       </div>
       <div className="flex items-center gap-3">
-        <SubmitButton>Add measurement</SubmitButton>
-        <FormMessage state={state} success="Measurement added." />
+        <SubmitButton>הוסף מדידה</SubmitButton>
+        <FormMessage state={state} success="המדידה נוספה." />
       </div>
     </form>
   );

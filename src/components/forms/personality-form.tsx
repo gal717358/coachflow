@@ -28,7 +28,7 @@ export function PersonalityForm({
   return (
     <form action={formAction} className="space-y-4">
       <div>
-        <div className="mb-2 text-sm font-medium">Motivation style</div>
+        <div className="mb-2 text-sm font-medium">סגנון מוטיבציה</div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {Object.entries(MOTIVATION_STYLE_LABELS).map(([value, label]) => (
             <label key={value} className="flex items-center gap-2 text-sm">
@@ -46,7 +46,7 @@ export function PersonalityForm({
       </div>
 
       <div className="grid gap-2 sm:max-w-xs">
-        <Label htmlFor="communication_style">Communication style</Label>
+        <Label htmlFor="communication_style">סגנון תקשורת</Label>
         <select
           id="communication_style"
           name="communication_style"
@@ -63,19 +63,19 @@ export function PersonalityForm({
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="notes">Coaching notes</Label>
+        <Label htmlFor="notes">הערות אימון</Label>
         <Textarea
           id="notes"
           name="notes"
           rows={3}
           defaultValue={personality?.notes ?? ""}
-          placeholder="e.g. Responds best to positive reinforcement and measurable goals."
+          placeholder="לדוגמה: מגיב הכי טוב לחיזוק חיובי ולמטרות מדידות."
         />
       </div>
 
       <div className="flex items-center gap-3">
-        <SubmitButton>Save personality</SubmitButton>
-        <FormMessage state={state} success="Saved." />
+        <SubmitButton>שמור אישיות</SubmitButton>
+        <FormMessage state={state} success="נשמר." />
       </div>
     </form>
   );

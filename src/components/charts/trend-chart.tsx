@@ -64,7 +64,7 @@ export function TrendChart({
       </div>
       {points.length < 2 ? (
         <p className="py-8 text-center text-xs text-muted-foreground">
-          Need at least two entries to chart a trend.
+          נדרשות לפחות שתי רשומות להצגת מגמה.
         </p>
       ) : (
         <ResponsiveContainer width="100%" height={140}>

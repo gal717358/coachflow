@@ -64,9 +64,9 @@ async function authorize(athleteId: string) {
     "id" | "primary_coach_id" | "secondary_coach_id"
   > | null;
 
-  if (!athlete) return { error: "Athlete not found." as const };
+  if (!athlete) return { error: "המתאמן לא נמצא." as const };
   if (!canEditAthlete(user, athlete)) {
-    return { error: "You don't have permission to edit this athlete." as const };
+    return { error: "אין לך הרשאה לערוך מתאמן זה." as const };
   }
   return { supabase, user: user!, athlete };
 }
@@ -76,13 +76,13 @@ async function authorizeOwner(athleteId: string) {
   const supabase = await createClient();
   const user = await currentUser();
   if (!user || user.role !== "owner")
-    return { error: "Only the studio owner can reassign coaches." as const };
+    return { error: "רק בעל הסטודיו יכול לשייך מאמנים מחדש." as const };
   const { data } = await supabase
     .from("athletes")
     .select("id")
     .eq("id", athleteId)
     .maybeSingle();
-  if (!data) return { error: "Athlete not found." as const };
+  if (!data) return { error: "המתאמן לא נמצא." as const };
   return { supabase, user };
 }
 
@@ -114,8 +114,8 @@ export async function addNote(
   const category = str(formData.get("category"));
   const note = str(formData.get("note"));
   if (!NOTE_CATEGORIES.includes(category))
-    return { ok: false, error: "Pick a valid category." };
-  if (!note) return { ok: false, error: "Note can't be empty." };
+    return { ok: false, error: "בחרו קטגוריה תקינה." };
+  if (!note) return { ok: false, error: "הערה אינה יכולה להיות ריקה." };
 
   const { error } = await auth.supabase.from("coach_notes").insert({
     athlete_id: athleteId,
@@ -137,18 +137,18 @@ export async function addGoal(
   if ("error" in auth) return { ok: false, error: auth.error };
 
   const title = str(formData.get("title"));
-  if (!title) return { ok: false, error: "Title is required." };
+  if (!title) return { ok: false, error: "כותרת היא שדה חובה." };
   const status = str(formData.get("status")) || "not_started";
   if (!GOAL_STATUSES.includes(status))
-    return { ok: false, error: "Invalid status." };
+    return { ok: false, error: "סטטוס לא תקין." };
   const horizonRaw = str(formData.get("horizon_days"));
   if (horizonRaw && !HORIZONS.includes(horizonRaw))
-    return { ok: false, error: "Invalid time horizon." };
+    return { ok: false, error: "טווח זמן לא תקין." };
 
   const target = num(formData.get("target_value"));
   const current = num(formData.get("current_value"));
   if (target === undefined || current === undefined)
-    return { ok: false, error: "Target/current must be numbers." };
+    return { ok: false, error: "היעד והערך הנוכחי חייבים להיות מספרים." };
 
   const { error } = await auth.supabase.from("goals").insert({
     athlete_id: athleteId,
@@ -176,10 +176,10 @@ export async function updateGoal(
 
   const status = str(formData.get("status"));
   if (!GOAL_STATUSES.includes(status))
-    return { ok: false, error: "Invalid status." };
+    return { ok: false, error: "סטטוס לא תקין." };
   const current = num(formData.get("current_value"));
   if (current === undefined)
-    return { ok: false, error: "Current value must be a number." };
+    return { ok: false, error: "הערך הנוכחי חייב להיות מספר." };
 
   const { error } = await auth.supabase
     .from("goals")
@@ -200,17 +200,18 @@ export async function addMeasurement(
   if ("error" in auth) return { ok: false, error: auth.error };
 
   const date = str(formData.get("date"));
-  if (!date) return { ok: false, error: "Date is required." };
+  if (!date) return { ok: false, error: "תאריך הוא שדה חובה." };
 
   const fields = ["weight", "body_fat", "muscle_mass", "waist", "hips", "arm"];
   const values: Record<string, number | null> = {};
   for (const f of fields) {
     const v = num(formData.get(f));
-    if (v === undefined) return { ok: false, error: `${f} must be a number.` };
+    if (v === undefined)
+      return { ok: false, error: "אחת המדידות אינה מספר תקין." };
     values[f] = v;
   }
   if (Object.values(values).every((v) => v === null))
-    return { ok: false, error: "Enter at least one measurement." };
+    return { ok: false, error: "הזינו לפחות מדידה אחת." };
 
   const { error } = await auth.supabase
     .from("body_measurements")
@@ -229,7 +230,7 @@ export async function addAssessment(
   if ("error" in auth) return { ok: false, error: auth.error };
 
   const date = str(formData.get("date"));
-  if (!date) return { ok: false, error: "Date is required." };
+  if (!date) return { ok: false, error: "תאריך הוא שדה חובה." };
 
   const scoreFields = [
     "strength_score",
@@ -243,13 +244,13 @@ export async function addAssessment(
   for (const f of scoreFields) {
     const v = score(formData.get(f));
     if (v === undefined)
-      return { ok: false, error: "Scores must be whole numbers from 1 to 10." };
+      return { ok: false, error: "הציונים חייבים להיות מספרים שלמים בין 1 ל-10." };
     scores[f] = v;
   }
 
   const experience = str(formData.get("experience_level"));
   if (experience && !EXPERIENCE_LEVELS.includes(experience))
-    return { ok: false, error: "Invalid experience level." };
+    return { ok: false, error: "רמת ניסיון לא תקינה." };
 
   const { error } = await auth.supabase.from("assessments").insert({
     athlete_id: athleteId,
@@ -272,14 +273,14 @@ export async function addMovementAssessment(
   if ("error" in auth) return { ok: false, error: auth.error };
 
   const date = str(formData.get("date"));
-  if (!date) return { ok: false, error: "Date is required." };
+  if (!date) return { ok: false, error: "תאריך הוא שדה חובה." };
   const movement = str(formData.get("movement"));
   if (!MOVEMENTS.includes(movement))
-    return { ok: false, error: "Pick a valid movement." };
+    return { ok: false, error: "בחרו תנועה תקינה." };
 
   const sc = score(formData.get("score"));
   if (sc === undefined)
-    return { ok: false, error: "Score must be a whole number from 1 to 10." };
+    return { ok: false, error: "הציון חייב להיות מספר שלם בין 1 ל-10." };
 
   const issues = formData
     .getAll("issues")
@@ -313,7 +314,7 @@ export async function savePersonality(
     .filter((m) => MOTIVATION_STYLES.includes(m));
   const communication = str(formData.get("communication_style"));
   if (communication && !COMMUNICATION_STYLES.includes(communication))
-    return { ok: false, error: "Invalid communication style." };
+    return { ok: false, error: "סגנון תקשורת לא תקין." };
 
   const { error } = await auth.supabase.from("athlete_personality").upsert(
     {
@@ -363,7 +364,7 @@ export async function saveScores(
   for (const f of fields) {
     const v = score(formData.get(f));
     if (v === undefined)
-      return { ok: false, error: "Ratings must be whole numbers from 1 to 10." };
+      return { ok: false, error: "הדירוגים חייבים להיות מספרים שלמים בין 1 ל-10." };
     values[f] = v;
   }
 
@@ -388,9 +389,9 @@ export async function reassignCoaches(
   const secondaryRaw = str(formData.get("secondary_coach_id"));
   const secondary = secondaryRaw || null;
 
-  if (!primary) return { ok: false, error: "A primary coach is required." };
+  if (!primary) return { ok: false, error: "נדרש מאמן ראשי." };
   if (secondary && secondary === primary)
-    return { ok: false, error: "Secondary coach must differ from primary." };
+    return { ok: false, error: "המאמן המשני חייב להיות שונה מהראשי." };
 
   // Validate the chosen ids are real users.
   const ids = [primary, ...(secondary ? [secondary] : [])];
@@ -399,7 +400,7 @@ export async function reassignCoaches(
     .select("id")
     .in("id", ids);
   if ((users?.length ?? 0) !== ids.length)
-    return { ok: false, error: "Selected coach no longer exists." };
+    return { ok: false, error: "המאמן שנבחר אינו קיים עוד." };
 
   const { error } = await auth.supabase
     .from("athletes")
@@ -419,17 +420,17 @@ export async function addPerformance(
   if ("error" in auth) return { ok: false, error: auth.error };
 
   const date = str(formData.get("date"));
-  if (!date) return { ok: false, error: "Date is required." };
+  if (!date) return { ok: false, error: "תאריך הוא שדה חובה." };
   const exercise = str(formData.get("exercise"));
   if (!EXERCISES.includes(exercise))
-    return { ok: false, error: "Pick a valid exercise." };
+    return { ok: false, error: "בחרו תרגיל תקין." };
 
   const weight = num(formData.get("weight"));
   const reps = num(formData.get("reps"));
   if (weight === undefined || weight === null)
-    return { ok: false, error: "Weight is required." };
+    return { ok: false, error: "משקל הוא שדה חובה." };
   if (reps === undefined || reps === null || reps < 1)
-    return { ok: false, error: "Reps must be at least 1." };
+    return { ok: false, error: "מספר החזרות חייב להיות לפחות 1." };
 
   const { error } = await auth.supabase.from("exercise_performance").insert({
     athlete_id: athleteId,

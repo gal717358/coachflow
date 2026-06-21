@@ -37,7 +37,7 @@ export default async function AssessmentsPage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>New Fitness Assessment</CardTitle>
+            <CardTitle>הערכת כושר חדשה</CardTitle>
           </CardHeader>
           <CardContent>
             <AssessmentForm athleteId={id} />
@@ -48,10 +48,10 @@ export default async function AssessmentsPage({
       <Card>
         <CardHeader>
           <CardTitle>
-            Fitness Assessment
+            הערכת כושר
             {latest ? (
               <span className="ms-2 text-sm font-normal text-muted-foreground">
-                latest {formatDate(latest.date)}
+                אחרון {formatDate(latest.date)}
               </span>
             ) : null}
           </CardTitle>
@@ -61,26 +61,26 @@ export default async function AssessmentsPage({
             <LatestAssessment a={latest} />
           ) : (
             <p className="text-sm text-muted-foreground">
-              No fitness assessment yet.
+              אין הערכת כושר עדיין.
             </p>
           )}
 
           {assessments.length > 1 && (
             <div className="mt-6">
               <div className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Earlier assessments
+                הערכות קודמות
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b text-start text-muted-foreground">
-                      <th className="py-2 pe-4 font-medium">Date</th>
+                      <th className="py-2 pe-4 font-medium">תאריך</th>
                       {ASSESSMENT_DIMENSIONS.map((d) => (
                         <th key={d.key} className="py-2 pe-4 font-medium">
-                          {d.label.slice(0, 4)}
+                          {d.label}
                         </th>
                       ))}
-                      <th className="py-2 pe-4 font-medium">Level</th>
+                      <th className="py-2 pe-4 font-medium">רמה</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -113,7 +113,7 @@ export default async function AssessmentsPage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>New Movement Assessment</CardTitle>
+            <CardTitle>הערכת תנועה חדשה</CardTitle>
           </CardHeader>
           <CardContent>
             <MovementForm athleteId={id} />
@@ -123,12 +123,12 @@ export default async function AssessmentsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Movement Assessments</CardTitle>
+          <CardTitle>הערכות תנועה</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {movements.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No movement assessments yet.
+              אין הערכות תנועה עדיין.
             </p>
           ) : (
             movements.map((m) => (
@@ -187,7 +187,7 @@ function LatestAssessment({ a }: { a: Assessment }) {
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
         {a.experience_level && (
           <span>
-            <span className="text-muted-foreground">Experience: </span>
+            <span className="text-muted-foreground">ניסיון: </span>
             <span className="font-medium">
               {EXPERIENCE_LABELS[a.experience_level]}
             </span>
@@ -196,7 +196,7 @@ function LatestAssessment({ a }: { a: Assessment }) {
       </div>
       {a.injury_notes && (
         <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-sm">
-          <span className="font-medium text-amber-700">Injury history: </span>
+          <span className="font-medium text-amber-700">היסטוריית פציעות: </span>
           {a.injury_notes}
         </div>
       )}

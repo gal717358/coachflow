@@ -27,7 +27,7 @@ export default async function ProfilePage({
     <div className="space-y-5">
       <Card>
         <CardHeader>
-          <CardTitle>Personality</CardTitle>
+          <CardTitle>אישיות</CardTitle>
         </CardHeader>
         <CardContent>
           {canEdit ? (
@@ -40,7 +40,7 @@ export default async function ProfilePage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Quick Insights</CardTitle>
+          <CardTitle>תובנות מהירות</CardTitle>
         </CardHeader>
         <CardContent>
           {canEdit ? (
@@ -53,7 +53,7 @@ export default async function ProfilePage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Coach Rating</CardTitle>
+          <CardTitle>דירוג מאמן</CardTitle>
         </CardHeader>
         <CardContent>
           {canEdit ? (
@@ -80,7 +80,7 @@ function PersonalityView({ personality }: { personality: Personality | null }) {
       </div>
       {personality.communication_style && (
         <div className="text-sm">
-          <span className="text-muted-foreground">Communication: </span>
+          <span className="text-muted-foreground">תקשורת: </span>
           <span className="font-medium">
             {COMMUNICATION_LABELS[personality.communication_style]}
           </span>
@@ -97,8 +97,8 @@ function InsightsView({ insights }: { insights: Insights | null }) {
   if (!insights) return <Empty />;
   return (
     <div className="grid gap-6 sm:grid-cols-2">
-      <List title="Strengths" items={insights.strengths} />
-      <List title="Improvement areas" items={insights.improvements} />
+      <List title="חוזקות" items={insights.strengths} />
+      <List title="תחומים לשיפור" items={insights.improvements} />
     </div>
   );
 }
@@ -106,11 +106,11 @@ function InsightsView({ insights }: { insights: Insights | null }) {
 function ScoresView({ scores }: { scores: AthleteScores | null }) {
   if (!scores) return <Empty />;
   const rows: [string, number | null][] = [
-    ["Consistency", scores.consistency],
-    ["Discipline", scores.discipline],
-    ["Technique", scores.technique],
-    ["Progress", scores.progress],
-    ["Engagement", scores.engagement],
+    ["עקביות", scores.consistency],
+    ["משמעת", scores.discipline],
+    ["טכניקה", scores.technique],
+    ["התקדמות", scores.progress],
+    ["מעורבות", scores.engagement],
   ];
   return (
     <dl className="space-y-1.5 text-sm sm:max-w-md">
@@ -145,5 +145,5 @@ function List({ title, items }: { title: string; items: string[] }) {
 }
 
 function Empty() {
-  return <p className="text-sm text-muted-foreground">Not set.</p>;
+  return <p className="text-sm text-muted-foreground">לא הוגדר.</p>;
 }

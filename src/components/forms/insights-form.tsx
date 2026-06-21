@@ -24,32 +24,32 @@ export function InsightsForm({
     <form action={formAction} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
-          <Label htmlFor="strengths">Top strengths</Label>
+          <Label htmlFor="strengths">חוזקות עיקריות</Label>
           <Textarea
             id="strengths"
             name="strengths"
             rows={4}
             defaultValue={(insights?.strengths ?? []).join("\n")}
-            placeholder="One per line"
+            placeholder="פריט בכל שורה"
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="improvements">Improvement areas</Label>
+          <Label htmlFor="improvements">תחומים לשיפור</Label>
           <Textarea
             id="improvements"
             name="improvements"
             rows={4}
             defaultValue={(insights?.improvements ?? []).join("\n")}
-            placeholder="One per line"
+            placeholder="פריט בכל שורה"
           />
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        One item per line. The Snapshot shows the top three of each.
+        פריט בכל שורה. תמונת המצב מציגה את שלושת הראשונים מכל אחד.
       </p>
       <div className="flex items-center gap-3">
-        <SubmitButton>Save insights</SubmitButton>
-        <FormMessage state={state} success="Saved." />
+        <SubmitButton>שמור תובנות</SubmitButton>
+        <FormMessage state={state} success="נשמר." />
       </div>
     </form>
   );

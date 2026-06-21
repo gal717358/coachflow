@@ -5,12 +5,12 @@ import { canCurrentUserEdit, getMeasurements } from "@/lib/queries";
 import { formatDate, shortDate } from "@/lib/format";
 
 const COLS: [key: string, label: string][] = [
-  ["weight", "Weight"],
-  ["body_fat", "Body Fat %"],
-  ["muscle_mass", "Muscle"],
-  ["waist", "Waist"],
-  ["hips", "Hips"],
-  ["arm", "Arm"],
+  ["weight", "משקל"],
+  ["body_fat", "אחוז שומן"],
+  ["muscle_mass", "שריר"],
+  ["waist", "מותניים"],
+  ["hips", "ירכיים"],
+  ["arm", "זרוע"],
 ];
 
 export default async function MeasurementsPage({
@@ -36,7 +36,7 @@ export default async function MeasurementsPage({
       {canEdit && (
         <Card>
           <CardHeader>
-            <CardTitle>Add Measurement</CardTitle>
+            <CardTitle>הוספת מדידה</CardTitle>
           </CardHeader>
           <CardContent>
             <MeasurementForm athleteId={id} />
@@ -47,25 +47,25 @@ export default async function MeasurementsPage({
       {rows.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Trends</CardTitle>
+            <CardTitle>מגמות</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <TrendChart
-                title="Weight"
-                unit="kg"
+                title="משקל"
+                unit=' ק"ג'
                 color="var(--chart-1)"
                 data={trend("weight")}
               />
               <TrendChart
-                title="Body Fat"
+                title="אחוז שומן"
                 unit="%"
                 color="var(--chart-3)"
                 data={trend("body_fat")}
               />
               <TrendChart
-                title="Muscle Mass"
-                unit="kg"
+                title="מסת שריר"
+                unit=' ק"ג'
                 color="var(--chart-2)"
                 data={trend("muscle_mass")}
                 goodDirection="up"
@@ -77,17 +77,17 @@ export default async function MeasurementsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>History</CardTitle>
+          <CardTitle>היסטוריה</CardTitle>
         </CardHeader>
         <CardContent>
           {rows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No measurements yet.</p>
+            <p className="text-sm text-muted-foreground">אין מדידות עדיין.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-start text-muted-foreground">
-                    <th className="py-2 pe-4 font-medium">Date</th>
+                    <th className="py-2 pe-4 font-medium">תאריך</th>
                     {COLS.map(([key, label]) => (
                       <th key={key} className="py-2 pe-4 font-medium">
                         {label}
